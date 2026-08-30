@@ -1,0 +1,77 @@
+[project]
+name = "oald10-easydict-service"
+version = "0.1.0"
+description = "Offline OALD10 bilingual converter and EasyDict-compatible read-only service"
+readme = "README.md"
+authors = [
+    { name = "liyuan", email = "mail.liyuan@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.141.1",
+    "pydantic>=2.13.4",
+    "uvicorn>=0.52.1",
+    "zstandard>=0.25.0",
+]
+
+[project.scripts]
+oald10 = "oald10_easydict_service.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.11.6,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+build = [
+    "beautifulsoup4>=4.15.0",
+    "lxml>=6.1.1",
+    "mdict-utils==1.3.14",
+]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.16.2",
+    "ty>=0.0.69",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN401",
+    "COM812",
+    "CPY001",
+    "D202",
+    "D203",
+    "D213",
+    "EM101",
+    "EM102",
+    "ISC001",
+    "PLR0912",
+    "PLR0915",
+    "TC003",
+    "TRY003",
+    "TRY300",
+    "TRY301",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D103", "INP001", "PLR2004", "RUF001", "S101"]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--cov=oald10_easydict_service",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-fail-under=80",
+]
+testpaths = ["tests"]
+
+[tool.ty.environment]
+python-version = "3.12"
+
+[tool.ty.terminal]
+error-on-warning = true

@@ -1,0 +1,48 @@
+services:
+  oald10:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      OALD10_DATA_PATH: /data
+      OALD10_PORT: ${OALD10_PORT}
+    command:
+      - uv
+      - run
+      - --frozen
+      - --no-sync
+      - uvicorn
+      - oald10_easydict_service.service:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - ${OALD10_PORT}
+    ports:
+      - 127.0.0.1:${OALD10_PORT}:${OALD10_PORT}
+    volumes:
+      - type: bind
+        source: ${OALD10_DATA_PATH}
+        target: /data
+        read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    healthcheck:
+      test:
+        - CMD
+        - uv
+        - run
+        - --frozen
+        - --no-sync
+        - python
+        - -c
+        - import os, urllib.request; urllib.request.urlopen('http://127.0.0.1:' + os.environ['OALD10_PORT'] + '/health', timeout=3).read()
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
