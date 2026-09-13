@@ -1,7 +1,7 @@
 # OALD10 HTTP API Reference
 
 默认 base URL：`http://127.0.0.1:3070`。端口由 `OALD10_PORT` 配置，
-词典 ID 固定为 `oald10`。服务不提供认证、CORS、Swagger、OpenAPI、前缀搜索
+词典 ID 固定为 `oald10`。服务支持 CORS 跨域访问（适配 Anki 等前端客户端集成），不提供认证、Swagger、OpenAPI、前缀搜索
 或模糊搜索。
 
 ## 路由

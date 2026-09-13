@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path, PurePath
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 
 from oald10_easydict_service.store import DictionaryStore, StoreUnavailableError
@@ -63,6 +64,14 @@ def create_app(  # noqa: C901 - route handlers remain colocated with their lifes
         openapi_url=None,
         redirect_slashes=False,
         lifespan=lifespan,
+    )
+
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=False,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     def require_dictionary(dict_id: str) -> DictionaryStore:
