@@ -1,8 +1,10 @@
 # OALD10 HTTP API Reference
 
-默认 base URL：`http://127.0.0.1:3070`。端口由 `OALD10_PORT` 配置，
+Base URL 格式为 `http://<host>:<port>`。容器内部端口固定为 `33070`，Compose 宿主机映射端口由 `.env` 中的 `OALD10_PORT` 配置（默认端口为 `33070`，本机访问默认为 `http://127.0.0.1:33070`）。
 词典 ID 固定为 `oald10`。服务支持 CORS 跨域访问（适配 Anki 等前端客户端集成），不提供认证、Swagger、OpenAPI、前缀搜索
 或模糊搜索。
+
+> 下文调用示例使用 `${OALD10_PORT:-33070}` 表示宿主机访问端口（未设置环境变量时回退到默认端口 `33070`）。请根据实际部署的主机与端口替换。
 
 ## 路由
 
@@ -17,7 +19,7 @@
 ## 健康检查
 
 ```bash
-curl http://127.0.0.1:3070/health
+curl "http://127.0.0.1:${OALD10_PORT:-33070}/health"
 ```
 
 ```json
@@ -29,7 +31,7 @@ curl http://127.0.0.1:3070/health
 ## 词典信息
 
 ```bash
-curl http://127.0.0.1:3070/dictionaries
+curl "http://127.0.0.1:${OALD10_PORT:-33070}/dictionaries"
 ```
 
 响应为 `{"dictionaries":[...]}`。每个词典对象包含：
@@ -43,8 +45,8 @@ curl http://127.0.0.1:3070/dictionaries
 ## 按词头查询
 
 ```bash
-curl http://127.0.0.1:3070/word/oald10/answer
-curl 'http://127.0.0.1:3070/word/oald10/answer%20back'
+curl "http://127.0.0.1:${OALD10_PORT:-33070}/word/oald10/answer"
+curl "http://127.0.0.1:${OALD10_PORT:-33070}/word/oald10/answer%20back"
 ```
 
 查询使用 NFKC Unicode 规范化、不区分大小写，并折叠首尾及连续空白；仍须匹配
@@ -64,7 +66,7 @@ curl 'http://127.0.0.1:3070/word/oald10/answer%20back'
 ## 按 ID 获取词条
 
 ```bash
-curl http://127.0.0.1:3070/entry/oald10/3239937
+curl "http://127.0.0.1:${OALD10_PORT:-33070}/entry/oald10/3239937"
 ```
 
 entry 的顶层字段：
@@ -99,7 +101,7 @@ entry 的顶层字段：
 
 ```bash
 curl --output answer-uk.mp3 \
-  http://127.0.0.1:3070/audio/oald10/answer__gb_1.mp3
+  "http://127.0.0.1:${OALD10_PORT:-33070}/audio/oald10/answer__gb_1.mp3"
 ```
 
 成功时返回 `200`、`Content-Type: audio/mpeg` 和

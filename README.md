@@ -75,12 +75,12 @@ docker compose up -d --build
 docker compose ps
 ```
 
-默认监听 `http://127.0.0.1:3070`；端口和生成数据路径由 `.env` 中的
-`OALD10_PORT`、`OALD10_DATA_PATH` 设置。容器以非 root 用户运行，根文件
-系统只读，且只读挂载生成数据。
+容器内服务端口固定为 `33070`；Compose 宿主机端口由 `.env` 中的 `OALD10_PORT`
+设置（默认 `33070`，本机访问如 `http://127.0.0.1:33070`）；生成数据路径由
+`OALD10_DATA_PATH` 设置。容器以非 root 用户运行，根文件系统只读，且只读挂载生成数据。
 
 ```bash
-curl http://127.0.0.1:3070/health
+curl "http://127.0.0.1:${OALD10_PORT:-33070}/health"
 ```
 
 接口与响应格式见 [API.md](API.md)。
