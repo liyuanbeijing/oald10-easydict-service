@@ -83,7 +83,7 @@ docker compose ps
 curl "http://127.0.0.1:${OALD10_PORT:-33070}/health"
 ```
 
-接口与响应格式见 [API.md](API.md)。
+服务启动后，可在浏览器访问 `http://127.0.0.1:${OALD10_PORT:-33070}/docs` 查看 Swagger 交互文档。接口与响应格式见 [API.md](API.md)。
 
 ## 开发验证
 

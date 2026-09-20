@@ -134,10 +134,14 @@ def test_five_route_http_contract(tmp_path: Path) -> None:
         assert audio_response.content.startswith(b"ID3")
         assert client.get("/audio/oald10/missing.mp3").status_code == 404
         assert client.get("/audio/oald10/..%5Csecret.mp3").status_code == 400
-        assert client.get("/docs").status_code == 404
-        assert client.get("/openapi.json").status_code == 404
+        assert client.get("/docs").status_code == 200
+        assert client.get("/openapi.json").status_code == 200
+        assert client.get("/redoc").status_code == 404
         route_paths = {getattr(route, "path", None) for route in app.routes}
         assert route_paths == {
+            "/openapi.json",
+            "/docs",
+            "/docs/oauth2-redirect",
             "/health",
             "/dictionaries",
             "/word/{dict_id}/{word}",

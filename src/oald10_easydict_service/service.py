@@ -59,9 +59,9 @@ def create_app(  # noqa: C901 - route handlers remain colocated with their lifes
     application = FastAPI(
         title="OALD10 EasyDict Service",
         version="0.1.0",
-        docs_url=None,
+        docs_url="/docs",
         redoc_url=None,
-        openapi_url=None,
+        openapi_url="/openapi.json",
         redirect_slashes=False,
         lifespan=lifespan,
     )

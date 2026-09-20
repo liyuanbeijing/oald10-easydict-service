@@ -1,7 +1,7 @@
 # OALD10 HTTP API Reference
 
 Base URL 格式为 `http://<host>:<port>`。容器内部端口固定为 `33070`，Compose 宿主机映射端口由 `.env` 中的 `OALD10_PORT` 配置（默认端口为 `33070`，本机访问默认为 `http://127.0.0.1:33070`）。
-词典 ID 固定为 `oald10`。服务支持 CORS 跨域访问（适配 Anki 等前端客户端集成），不提供认证、Swagger、OpenAPI、前缀搜索
+词典 ID 固定为 `oald10`。服务支持 CORS 跨域访问（适配 Anki 等前端客户端集成），提供基于 Swagger UI 的在线交互文档（`/docs` 与 `/openapi.json`），不提供认证、前缀搜索
 或模糊搜索。
 
 > 下文调用示例使用 `${OALD10_PORT:-33070}` 表示宿主机访问端口（未设置环境变量时回退到默认端口 `33070`）。请根据实际部署的主机与端口替换。
@@ -15,6 +15,8 @@ Base URL 格式为 `http://<host>:<port>`。容器内部端口固定为 `33070`�
 | `GET` | `/word/oald10/{word}` | 按完整词头查询 |
 | `GET` | `/entry/oald10/{entry_id}` | 按稳定 ID 获取词条 |
 | `GET` | `/audio/oald10/{filename}` | 获取 MP3 发音 |
+| `GET` | `/docs` | Swagger UI 在线交互文档 |
+| `GET` | `/openapi.json` | OpenAPI 规范描述文件 |
 
 ## 健康检查
 
@@ -107,6 +109,20 @@ curl --output answer-uk.mp3 \
 成功时返回 `200`、`Content-Type: audio/mpeg` 和
 `Cache-Control: public, max-age=2592000, immutable`。文件名必须是安全的
 `.mp3` 基本文件名；不存在时返回 `404`。
+
+## 在线文档
+
+服务启动后，可在浏览器中直接访问 Swagger UI 交互式在线文档：
+
+```
+http://127.0.0.1:${OALD10_PORT:-33070}/docs
+```
+
+OpenAPI 规范 JSON 数据可通过以下地址获取：
+
+```bash
+curl "http://127.0.0.1:${OALD10_PORT:-33070}/openapi.json"
+```
 
 ## 错误
 
